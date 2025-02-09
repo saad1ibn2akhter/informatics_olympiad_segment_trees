@@ -1,47 +1,43 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define ll long long
-#define endl "\n"
-#define pb push_back
-#define ppb pop_back
-#define pf push_front
-#define ppf pop_front
-#define all(x) (x).begin(), (x).end()
-#define fr(a, b) for (ll i = a; i < b; i++)
-#define uniq(v) (v).erase(unique((v).begin(), (v).end()))
+/*
+ Coordinate compression - were compressing the indexes with smaller number with smaller indices and larger numbers with bigger indices
+in order to maitain the relative order of the values.
 
-void setIO(string name = "")
-{
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    if (name.size())
-    {
-        freopen((name + ".in").c_str(), "r", stdin);
-        freopen((name + ".out").c_str(), "w", stdout);
-    }
-}
+*/
 
-void solve()
+vector<int> compress_coordinates(vector<int> &values)
 {
-    vector<int> values = {100, 500, 2000, 100, 300};
-    vector<int> ordered_values = values;
-    sort(ordered_values.begin(), ordered_values.end());
-    ordered_values.erase(unique(ordered_values.begin(), ordered_values.end()), ordered_values.end());
+    vector<int> sorted_values = values;
+
+    sort(sorted_values.begin(), sorted_values.end());
+    sorted_values.erase(unique(sorted_values.begin(), sorted_values.end()), sorted_values.end());
 
     unordered_map<int, int> compressed_map;
-
-    for (int i = 0; i < ordered_values.size(); i++)
+    for (int i = 0; i < sorted_values.size(); i++)
     {
-        compressed_map[ordered_values[i]] = i;
+        compressed_map[sorted_values[i]] = i;
     }
+
+    vector<int> compressed_values;
+    for (int value : values)
+    {
+        compressed_values.push_back(compressed_map[value]);
+    }
+
+    return compressed_values;
 }
 
 int main()
 {
-    int t;
-    cin >> t;
-    while (t--)
+    vector<int> values = {100, 200, 1000, 500, 100, 200};
+    vector<int> compressed = compress_coordinates(values);
+
+    for (int val : compressed)
     {
-        solve();
+        cout << val << " ";
     }
+    cout << endl;
+
+    return 0;
 }
